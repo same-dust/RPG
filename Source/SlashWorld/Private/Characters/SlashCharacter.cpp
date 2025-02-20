@@ -117,6 +117,7 @@ void ASlashCharacter::EKeyPressed()
 
 void ASlashCharacter::Attack()
 {
+	Super::Attack();
 	if (CanAttack())
 	{
 		PlayAttackMontage();
@@ -126,6 +127,7 @@ void ASlashCharacter::Attack()
 
 void ASlashCharacter::PlayAttackMontage()
 {
+	Super::PlayAttackMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{
@@ -221,15 +223,6 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Jump);
 		EnhancedInputComponent->BindAction(PickAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
-	}
-}
-
-void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
-{
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
-	{
-		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-		EquippedWeapon->IgnoreActors.Empty();
 	}
 }
 
