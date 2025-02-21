@@ -49,13 +49,13 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
+	void EquipWeapon(AWeapon* OverlappingWeapon);
 	void EKeyPressed();
 	virtual void Attack() override;
 
 	/** 
 	* Play montage functions
 	*/
-	virtual void PlayAttackMontage() override;
 	virtual void AttackEnd() override;
 	virtual bool CanAttack() override;
 
@@ -70,12 +70,14 @@ protected:
 	void PlayEquipMontage(const FName& SectionName);
 	bool CanDisarm();
 	bool CanArm();
+	void Disarm();
+	void Arm();
 
 	UFUNCTION(BlueprintCallable)
-	void Disarm();
+	void AttachWeaponToBack();
 	
 	UFUNCTION(BlueprintCallable)
-	void Arm();
+	void AttachWeaponToHand();
 	
 	UFUNCTION(BlueprintCallable)
 	void FinishEquipping();
