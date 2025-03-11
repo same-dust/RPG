@@ -34,6 +34,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Die() override;
+	void SpawnSoul();
 	
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
@@ -125,5 +126,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	float ChasingSpeed = 300.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TSubclassOf<class ASoul> SoulClass;
 };
 
