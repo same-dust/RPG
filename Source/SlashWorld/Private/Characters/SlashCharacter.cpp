@@ -10,11 +10,13 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
 #include "Components/AttributeComponent.h"
+#include "GameMode/SlashGameModeBase.h"
 #include "Animation/AnimMontage.h"
 #include "HUD/SlashHUD.h"
 #include "HUD/SlashOverlay.h"
 #include "Items/Soul.h"
 #include "Items/Treasure.h"
+#include "TimerManager.h"
 
 ASlashCharacter::ASlashCharacter()
 {
@@ -64,6 +66,11 @@ void ASlashCharacter::AddGold(ATreasure* Treasure)
 	}
 }
 
+void ASlashCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+}
+
 void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -77,7 +84,10 @@ void ASlashCharacter::BeginPlay()
 	}
 	
 	Tags.Add(FName("EngageableTarget"));
-	InitializeSlashOverlay();
+	check(Attributes);
+	Attributes->InitHealth();
+	GetWorldTimerManager().SetTimerForNextTick(this, &ASlashCharacter::InitializeSlashOverlay);
+	//InitializeSlashOverlay();
 	
 }
 
@@ -188,6 +198,17 @@ void ASlashCharacter::Die_Implementation()
 
 	ActionState = EActionState::EAS_Dead;
 	DisableMeshCollision();
+	GetWorldTimerManager().SetTimer(ElimTimer, this, &ASlashCharacter::ElimTimerFinished, ElimDelay);
+}
+
+void ASlashCharacter::ElimTimerFinished()
+{
+	SlashGameMode = SlashGameMode == nullptr ? GetWorld()->GetAuthGameMode<ASlashGameModeBase>() : SlashGameMode;
+	if (SlashGameMode)
+	{
+		SlashGameMode->RequestRespawn(this, Controller);
+	}
+
 }
 
 bool ASlashCharacter::CanDisarm()

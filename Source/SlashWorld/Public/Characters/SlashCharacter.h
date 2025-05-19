@@ -33,6 +33,7 @@ public:
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls(ASoul* Soul) override;
 	virtual void AddGold(ATreasure* Treasure) override;
+	virtual void PossessedBy(AController* NewController) override;
 protected:
 	virtual void BeginPlay() override;
 
@@ -100,6 +101,10 @@ private:
 	bool IsUnoccupied();
 	void InitializeSlashOverlay();
 	void SetHUDHealth();
+	void ElimTimerFinished();
+
+	UPROPERTY()
+	class ASlashGameModeBase* SlashGameMode;
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
@@ -115,6 +120,11 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
+	
+	FTimerHandle ElimTimer;
 
 public:
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }

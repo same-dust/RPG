@@ -57,4 +57,5 @@ public:
 	FORCEINLINE int32 GetSouls() const { return Souls; }
 	FORCEINLINE float GetDodgeCost() const { return DodgeCost; }
 	FORCEINLINE float GetStamina() const { return Stamina; }
+	FORCEINLINE void InitHealth()  { Health = MaxHealth; }
 };
